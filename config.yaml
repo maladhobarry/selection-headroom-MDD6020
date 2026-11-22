@@ -1,0 +1,69 @@
+# Analysis configuration. Every random step reads its seed and sizes from here,
+# so a full re-run reproduces every number in the article.
+# Pre-specified in the analysis plan (OSF); any change must be logged in docs/deviations.md.
+
+seed: 20261122
+
+data:
+  figshare_article_id: 20123153          # Kromp et al. 2023, Sci Data 10:271
+  github_repo: software-competence-center-hagenberg/Blastocyst-Dataset
+  github_ref: d2acd672e708bdf6a2e52bf527e6e9419a01ee6a   # pinned commit (2023-04-25)
+  raw_dir: data/raw
+  processed_dir: data/processed
+
+population:
+  main_day: 5                 # strategies are compared on day-5 transfers only (photo-timing issue on day 4)
+  min_blastocysts: 2          # a choice exists only with >= 2 blastocysts
+
+model:
+  cv_folds: 10                # cross-fitting folds (by patient) for sibling predictions
+  ridge_Cs: 20                # grid size for the ridge penalty search
+  age_spline_knots: 3
+  n_imputations: 20           # multiple imputation of AMH (chained equations)
+
+bootstrap:
+  n_main: 2000                # bootstrap replicates for the primary estimands
+  n_secondary: 500            # replicates for secondary and sensitivity analyses
+
+simulation:
+  n_reps: 1000                # repetitions per scenario
+  embryo_sd_grid: [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 2.0]   # SD of embryo-level viability (logit scale)
+  auroc_delta_grid: [0.01, 0.02, 0.05, 0.10, 0.15]   # AUROC gain over morphology
+  power: 0.80
+  alpha: 0.05
+
+observers:
+  n_reps: 1000
+  # Annotators kept by Kromp et al. after consensus filtering (accuracy >= 0.5 vs the Gardner expert).
+  retained: [Annotator_0, Annotator_1, Annotator_2, Annotator_5, Annotator_7, Annotator_8]
+
+sensitivity:
+  hidden_advantage_or: [1.2, 1.5, 2.0]
+
+images:                       # optional step G (pre-specified grid; all configurations reported)
+  primary: {backbone: resnet50_gardner, preprocess: pad, n_pcs: 20}
+  backbones: [resnet50_imagenet, dinov2_vits14, resnet50_gardner]
+  preprocess: [pad, clahe]
+  n_pcs: [10, 20, 50]
+  cv_repeats: 5               # repeated cross-fitting with different fold splits
+  outcomes: [LB, HA, SS]      # primary: live birth; secondary: heart activity, positive hCG
+  finetune: {epochs: 8, batch_size: 32, lr: 0.0001, val_fraction: 0.1}
+
+explain:                       # optional step H (descriptive; needs step G outputs)
+  outcomes: [SS, LB]          # outcome read-outs shown as maps
+  n_sanity: 100               # images for the randomisation sanity check
+  n_gallery: 8                # images per map gallery
+
+# Fast mode (make quick): small replicate counts to check the pipeline end to end.
+quick:
+  bootstrap: {n_main: 50, n_secondary: 30}
+  simulation: {n_reps: 40}
+  observers: {n_reps: 40}
+  model: {n_imputations: 3}
+  images:
+    backbones: [resnet50_imagenet, resnet50_gardner]
+    preprocess: [pad]
+    n_pcs: [20]
+    cv_repeats: 1
+    finetune: {epochs: 1, batch_size: 32, lr: 0.0001, val_fraction: 0.1}
+  explain: {n_sanity: 10, n_gallery: 4}

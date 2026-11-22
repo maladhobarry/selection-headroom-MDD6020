@@ -1,0 +1,9 @@
+check,value
+images,2344
+distinct sizes (top 3),512x384: 2344
+colour modes,RGB: 2344
+exact duplicate files,31
+brightness median (IQR),0.492 (0.482-0.502)
+contrast median (IQR),0.093 (0.082-0.106)
+sharpness median (IQR),0.00051 (0.00039-0.00070)
+flagged (1st/99th percentile or duplicate),165

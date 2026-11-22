@@ -1,0 +1,11 @@
+"""Run analysis step: 09_figures (see src/headroom/pipeline.py:step_figures)."""
+
+import argparse
+
+from headroom.pipeline import step_figures
+
+if __name__ == "__main__":
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--quick", action="store_true", help="small replicate counts (pipeline check)")
+    a = ap.parse_args()
+    step_figures(quick=a.quick or None)

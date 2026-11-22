@@ -1,0 +1,9 @@
+| step | transfers_or_rows | patients |
+|---|---|---|
+| Fresh transfers in clinical file (rows) | 754 | 732 |
+| Excluded: double-embryo transfers | -44 | -22 |
+| Excluded: transferred image without expert grade | -1 | -1 |
+| Single-embryo transfers analysed (model, step B) | 709 | 709 |
+| Day-5 single-embryo transfers (steps C, F) | 605 | 605 |
+|   ... with >= 2 blastocysts (strategies, E1-E4) | 396 | 396 |
+|   ... with 1 blastocyst (no-choice group, step F) | 209 | 209 |

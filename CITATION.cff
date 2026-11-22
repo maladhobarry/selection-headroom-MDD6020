@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite it as below, and cite the dataset (Kromp et al. 2023)."
+title: "selection-headroom: how much can embryo selection gain?"
+version: 0.1.0
+date-released: 2026-12-02
+license: MIT
+authors:
+  - family-names: "TODO"
+    given-names: "Mamadou"
+references:
+  - type: article
+    title: "An annotated human blastocyst dataset to benchmark deep learning architectures for in vitro fertilization"
+    authors:
+      - family-names: Kromp
+        given-names: Florian
+    journal: "Scientific Data"
+    volume: 10
+    start: 271
+    year: 2023
+    doi: 10.1038/s41597-023-02182-3
